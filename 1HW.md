@@ -149,3 +149,8 @@
 
 
 **Что сделали** - убрали транзитивные зависимости
+
+## 5 
+ER диаграмма 
+<img width="904" height="676" alt="изображение" src="https://github.com/user-attachments/assets/db940cb9-8bc3-4121-be75-6749b32db3e3" />
+
