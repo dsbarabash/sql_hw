@@ -19,7 +19,7 @@
 CREATE DATABASE IF NOT EXISTS cinema_db;
 
 CREATE TABLE directors (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   bith_date DATE,
@@ -27,7 +27,7 @@ CREATE TABLE directors (
 );
 
 CREATE TABLE movies (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   title VARCHAR(200) NOT NULL,
   release_year INT,
   genre VARCHAR(50),
@@ -37,7 +37,7 @@ CREATE TABLE movies (
 );
 
 CREATE TABLE customers (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE customers (
 );
 
 CREATE TABLE actors (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   bith_date DATE,
@@ -65,15 +65,15 @@ CREATE TABLE movies_actors (
   movie_id INT,
   actor_id INT,
   PRIMARY KEY (movie_id, actor_id),
-  FOREIGN KEY (movie_id) REFERENCES movies(id),
-  FOREIGN KEY (actor_id) REFERENCES actors(id),
+  FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
+  FOREIGN KEY (actor_id) REFERENCES actors(id) ON DELETE CASCADE,
 );
 
 CREATE TABLE orders (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   customer_id INT NOT NULL,
   movie_id INT NOT NULL,
-  order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  order_date DATE DEFAULT CURRENT_DATE,
   return_date DATE,
   FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
   FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
