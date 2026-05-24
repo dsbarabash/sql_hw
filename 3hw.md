@@ -17,14 +17,19 @@
 
     
 Задания:
+```
 SELECT COALESCE(rating, 0) FROM movies WHERE rating=0;
 SELECT title, CEIL(rating) FROM movies;
 SELECT * FROM customers  where registration_date>CURRENT_DATE-30;
 SELECT c.customer_id, c.first_name, c.last_name, r.movie_id, SUM(r.return_date - r.rental_date) AS rental_days FROM rentals r JOIN customers c ON c.customer_id=r.customer_id GROUP BY c.customer_id, r.movie_id;
 SELECT UPPER(title) FROM movies UPPER;
+```
 
 
 
 
 
 Задания со звездочкой - выполняются по желанию:
+```
+
+```
