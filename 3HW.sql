@@ -17,6 +17,7 @@ SELECT UPPER(title) FROM movies;
 SELECT substring(description for 50) FROM movies;
 SELECT genre, count(genre) FROM movies GROUP BY genre;
 SELECT title, rating FROM movies ORDER BY rating DESC;
-SELECT title, rating, LAG(rating, 1) OVER (ORDER BY rating DESC) AS previous_rating FROM moviesORDER BY rating DESC;SELECT genre, (COUNT(genre)), ROUND(AVG(rating), 2) FROM movies GROUP BY genre, rating;
+SELECT title, rating, LAG(rating, 1) OVER (ORDER BY rating DESC) AS previous_rating FROM movies ORDER BY rating DESC; 
+SELECT genre, (COUNT(genre)), ROUND(AVG(rating), 2) FROM movies GROUP BY genre, rating;
 
 
