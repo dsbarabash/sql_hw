@@ -1,5 +1,5 @@
     
-//Задания:
+-- Задания:
 
 SELECT COALESCE(rating, 0) FROM movies WHERE rating=0;
 SELECT title, CEIL(rating) FROM movies;
@@ -12,7 +12,7 @@ SELECT UPPER(title) FROM movies;
 
 
 
-// Задания со звездочкой - выполняются по желанию:
+-- Задания со звездочкой - выполняются по желанию:
 
 SELECT substring(description for 50) FROM movies;
 SELECT genre, count(genre) FROM movies GROUP BY genre;
