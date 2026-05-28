@@ -17,19 +17,29 @@ ORDER BY
 
 -- Напишите запрос, который выводит список всех клиентов и, если они совершали аренды, то укажите дату последней аренды. Если клиент не совершал аренды, дата аренды должна быть NULL.
 
-
-
-
+select
+    c.last_name, c.first_name, MAX(r.rental_date)
+FROM 
+    customers AS c
+LEFT JOIN 
+    rentals AS r ON c.customer_id=r.customer_id 
+GROUP BY
+    c.first_name, c.last_name
+ORDER BY 
+    c.last_name ASC
 
 
 
 -- Напишите запрос, который выводит название фильмов, чья продолжительность больше средней продолжительности всех фильмов в базе данных.
 
-
-
-
-
-
+SELECT 
+    title
+FROM 
+    movies 
+WHERE 
+    duration > (select AVG(duration) from movies)
+ORDER BY
+	duration
 
 -- * Используя CTE, напишите запрос, который вычисляет количество аренд для каждого жанра и выводит жанры с общим количеством аренд, отсортированных по количеству аренд в порядке убывания.
 
