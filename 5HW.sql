@@ -53,9 +53,10 @@ SELECT title, genre, additional_info->'awards' as awards from movies
 
 -- 9. Напишите запрос, который подсчитывает количество фильмов, имеющих более чем одну награду в поле awards внутри additional_info.
 
-
+SELECT count(title) from movies where jsonb_array_length(additional_info->'awards') > 1
 
 -- 10. Напишите запрос, который удаляет ключ preferred_actors из поля preferences для всех клиентов. 
 
-
+UPDATE customers 
+SET preferences = preferences - 'preferred_actors'
 
