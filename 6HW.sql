@@ -18,6 +18,15 @@
 
     -- Напишите запрос, который выводит названия достопримечательностей, полностью находящихся внутри границ территории Лувра. Координаты полигона Лувра уже записаны в таблице landmarks в поле boundary.
 
+    SELECT l1.name
+    FROM landmarks l1
+    CROSS JOIN (
+        SELECT boundary 
+        FROM landmarks 
+        WHERE name = 'Лувр'
+    ) l2
+    WHERE ST_Within(l1.location, l2.boundary)
+    AND l1.name != 'Лувр';
 
 
     -- Напишите запрос, который добавляет новую достопримечательность ""Музей Луи Виттона"" с координатами (48.864716, 2.349014) в таблицу landmarks. Укажите её местоположение как геометрию типа POINT.
@@ -26,6 +35,12 @@
     VALUES ('Музей Луи Виттона', ST_SetSRID(ST_MakePoint(2.349014, 48.864716), 4326), NULL);
 
     -- Напишите запрос, который выводит длину маршрута, соединяющего Эйфелеву башню и Лувр. Для этого используйте функцию ST_Length() для поля route в таблице routes.
+
+    SELECT ST_Length(route) AS route_length
+    FROM routes
+    WHERE start_location = (select location from landmarks  where name = 'Эйфелева башня' )
+    AND end_location = (select location from landmarks  where name = 'Лувр');
+
 
 
 -- Задание со звездочкой - выполняется по желанию:
