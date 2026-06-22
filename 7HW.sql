@@ -30,8 +30,25 @@
 		create trigger fill_rental_date
 		before insert or update of rental_date
 		on rentals
-		for each row
-		execute function fill_rental_date();
+			for each row execute function fill_rental_date();
 
 
         --Создайте триггер, который предотвращает удаление записей о фильмах, если они связаны с таблицей Rental. Используйте BEFORE DELETE триггер.
+
+	create or replace function keep_rented_films()
+	returns trigger
+	language plpgsql
+	as $$
+	begin
+	 select count(*) as rents from rentals where movie_id=old.movie_id;
+	  if (rents > 0) then
+	    RAISE EXCEPTION 'Запрещено удаление фильма котоырй ранее был арендован';
+	  end if;
+
+	return null;
+	end;
+	$$;
+	
+	CREATE TRIGGER emp_audit
+	BEFORE DELETE ON movies
+	    FOR EACH ROW EXECUTE function keep_rented_films();
