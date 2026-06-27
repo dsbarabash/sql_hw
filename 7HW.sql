@@ -60,29 +60,72 @@
 
     -- Последовательности (Sequences)
     --     Создайте последовательность actor_sequence, которая будет генерировать уникальные значения для новых актеров. Начальное значение должно быть 1000, шаг увеличения — 1.
-
-	CREATE SEQUENCE actor_sequence
-	AS bigint
-	START WITH 1000
-	INCREMENT BY 1
-	NO CYCLE
-	OWNED BY actors.actor_id
+	
+		CREATE SEQUENCE actor_sequence
+		AS bigint
+		START WITH 1000
+		INCREMENT BY 1
+		NO CYCLE
+		OWNED BY actors.actor_id
 
 	
     --     Добавьте нового актера в таблицу Actor, используя значение из созданной последовательности для поля actor_id.
 
-	insert into actors values (nextval('actor_sequence'), 'Tom', 'Holand', '1996-06-01', 'British');
+		insert into actors values (nextval('actor_sequence'), 'Tom', 'Holand', '1996-06-01', 'British');
 
 
     --     Обновите последовательность, чтобы начальное значение было на 10 больше последнего созданного значения. Проверьте изменение.
 	
-	select setval('actor_sequence', currval('actor_sequence')+10, true);
-	select currval('actor_sequence');
+		select setval('actor_sequence', currval('actor_sequence')+10, true);
+		select currval('actor_sequence');
 
 
     -- Триггеры (Triggers)
     --     Создайте триггер, который при обновлении поля return_date в таблице Rental устанавливает текущую дату, если поле NULL, и оставляет значение без изменений, если оно больше текущей даты.
+
+		create or replace function set_return_date()
+		returns trigger
+		language plpgsql
+		as $$
+		begin
+		  if return_date is null then
+		new.return_date := CURRENT_DATE;
+			return new;
+
+		elsif return_date < CURRENT_DATE then
+		new.return_date := CURRENT_DATE;
+		  return new;
+		  
+		  end if;
+		    return null;
+		
+		end;
+		$$;
+		
+		create trigger set_return_date
+		before insert or update of return_date
+		on rentals
+			for each row execute function set_return_date();
+
+
     --     Создайте триггер, который будет записывать информацию о каждом удалении записи из таблицы Customer в отдельную таблицу Customer_Deletion_Log. Запись должна включать ID клиента, дату удаления и email клиента.
+
+		create or replace function keep_deleted_customers()
+		returns trigger  
+		language plpgsql
+		as $$
+		begin
+		 insert into Customer_Deletion_Log values (customer_id, CURRENT_DATE, email)
+	
+		return null;
+		end;
+		$$;
+		
+		CREATE TRIGGER keep_deleted_customers
+		BEFORE DELETE ON customers
+		    FOR EACH ROW EXECUTE function keep_deleted_customers();
+
+
     --     Создайте триггер, который после добавления новой записи в таблицу Movie автоматически будет увеличивать количество фильмов данного жанра в таблице Genre_Statistics. Если запись о жанре уже существует, увеличьте счетчик на 1; если не существует, создайте новую запись для этого жанра.
 
 
