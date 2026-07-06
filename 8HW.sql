@@ -77,6 +77,31 @@ SELECT * FROM CalculateCustomerRentalCost(3, 5);
 --     Если клиент арендовал от 5 до 10 фильмов, вернуть статус 'Regular'.
 --     Если клиент арендовал менее 5 фильмов, вернуть статус 'Newbie'.
 
+create or replace function GetCustomerStatus(c_id int)
+returns text
+as $$
+declare
+  total int;
+
+begin
+
+  select count(*) from rentals INTO total WHERE customer_id = c_id;
+	
+  if total > 10 then
+   return 'VIP';
+  elsif  total <5 then 
+   return 'Newbie';
+   else 
+   return 'Regular';
+ end if;
+
+	
+end;
+$$ language plpgsql;
+
+SELECT * FROM GetCustomerStatus(4);
+
+
 --     Создайте функцию GetMostPopularGenre, которая возвращает жанр, по которому арендовали больше всего фильмов.Функция не принимает параметров и возвращает строку с названием самого популярного жанра.
 
 
