@@ -1,6 +1,6 @@
 -- Задания:
 
---     Создайте функцию GetMovieDurationInHours, которая принимает movie_id в качестве параметра и возвращает продолжительность фильма в часах (округленную до двух знаков после запятой).
+--     1. Создайте функцию GetMovieDurationInHours, которая принимает movie_id в качестве параметра и возвращает продолжительность фильма в часах (округленную до двух знаков после запятой).
 
 create or replace function GetMovieDurationInHours(m_id int)
 returns numeric
@@ -25,7 +25,7 @@ $$ language plpgsql;
 SELECT * FROM GetMovieDurationInHours(1);
 
 
---     Создайте функцию GetMoviesByDirector, которая принимает имя режиссера в качестве параметра и возвращает таблицу с названием фильма, годом выпуска и жанром для всех фильмов этого режиссера.
+--     2. Создайте функцию GetMoviesByDirector, которая принимает имя режиссера в качестве параметра и возвращает таблицу с названием фильма, годом выпуска и жанром для всех фильмов этого режиссера.
 
 create or replace function GetMoviesByDirector(d TEXT)
 returns table (
@@ -49,7 +49,7 @@ SELECT * FROM GetMoviesByDirector('James Cameron');
 
 -- Задание со звездочкой - выполняется по желанию
 
---     Создайте функцию CalculateCustomerRentalCost, которая принимает customer_id и возвращает общую стоимость всех аренд этого клиента, основываясь на фиксированной цене аренды одного фильма (например, 5 долларов).
+--     3. Создайте функцию CalculateCustomerRentalCost, которая принимает customer_id и возвращает общую стоимость всех аренд этого клиента, основываясь на фиксированной цене аренды одного фильма (например, 5 долларов).
 
 create or replace function CalculateCustomerRentalCost(c_id int, price float)
 returns numeric
@@ -71,7 +71,7 @@ $$ language plpgsql;
 SELECT * FROM CalculateCustomerRentalCost(3, 5);
 
 
---     Создайте функцию GetCustomerStatus, которая принимает customer_id и возвращает статус клиента в зависимости от количества аренд.
+--     4. Создайте функцию GetCustomerStatus, которая принимает customer_id и возвращает статус клиента в зависимости от количества аренд.
 
 --     Если клиент арендовал более 10 фильмов, вернуть статус 'VIP'.
 --     Если клиент арендовал от 5 до 10 фильмов, вернуть статус 'Regular'.
@@ -102,7 +102,7 @@ $$ language plpgsql;
 SELECT * FROM GetCustomerStatus(4);
 
 
---     Создайте функцию GetMostPopularGenre, которая возвращает жанр, по которому арендовали больше всего фильмов.Функция не принимает параметров и возвращает строку с названием самого популярного жанра.
+--     5. Создайте функцию GetMostPopularGenre, которая возвращает жанр, по которому арендовали больше всего фильмов.Функция не принимает параметров и возвращает строку с названием самого популярного жанра.
 
 create or replace function GetMostPopularGenre()
 returns text
