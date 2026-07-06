@@ -23,5 +23,41 @@ end;
 $$ language plpgsql;
 
 
+SELECT * FROM GetMovieDurationInHours(1);
+
+
 --     Создайте функцию GetMoviesByDirector, которая принимает имя режиссера в качестве параметра и возвращает таблицу с названием фильма, годом выпуска и жанром для всех фильмов этого режиссера.
+
+
+create or replace function GetMoviesByDirector(d TEXT)
+returns table (
+  title  varchar(255),
+  release_year int,
+  genre      varchar(100)
+  )
+as $$
+
+begin
+return query
+	select m.title, m.release_year, m.genre from movies m
+	WHERE  m.additional_info ->> 'director' = d;
+	
+end;
+$$ language plpgsql;
+
+
+SELECT * FROM GetMoviesByDirector('James Cameron');
+
+
+-- Задание со звездочкой - выполняется по желанию
+
+--     Создайте функцию CalculateCustomerRentalCost, которая принимает customer_id и возвращает общую стоимость всех аренд этого клиента, основываясь на фиксированной цене аренды одного фильма (например, 5 долларов).
+--     Создайте функцию GetCustomerStatus, которая принимает customer_id и возвращает статус клиента в зависимости от количества аренд.
+
+--     Если клиент арендовал более 10 фильмов, вернуть статус 'VIP'.
+--     Если клиент арендовал от 5 до 10 фильмов, вернуть статус 'Regular'.
+--     Если клиент арендовал менее 5 фильмов, вернуть статус 'Newbie'.
+
+--     Создайте функцию GetMostPopularGenre, которая возвращает жанр, по которому арендовали больше всего фильмов.Функция не принимает параметров и возвращает строку с названием самого популярного жанра.
+
 
