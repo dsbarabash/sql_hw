@@ -2,7 +2,6 @@
 
 --     Создайте функцию GetMovieDurationInHours, которая принимает movie_id в качестве параметра и возвращает продолжительность фильма в часах (округленную до двух знаков после запятой).
 
-
 create or replace function GetMovieDurationInHours(m_id int)
 returns numeric
 as $$
@@ -28,7 +27,6 @@ SELECT * FROM GetMovieDurationInHours(1);
 
 --     Создайте функцию GetMoviesByDirector, которая принимает имя режиссера в качестве параметра и возвращает таблицу с названием фильма, годом выпуска и жанром для всех фильмов этого режиссера.
 
-
 create or replace function GetMoviesByDirector(d TEXT)
 returns table (
   title  varchar(255),
@@ -52,6 +50,27 @@ SELECT * FROM GetMoviesByDirector('James Cameron');
 -- Задание со звездочкой - выполняется по желанию
 
 --     Создайте функцию CalculateCustomerRentalCost, которая принимает customer_id и возвращает общую стоимость всех аренд этого клиента, основываясь на фиксированной цене аренды одного фильма (например, 5 долларов).
+
+create or replace function CalculateCustomerRentalCost(c_id int, price float)
+returns numeric
+as $$
+declare
+  rental_date date;
+  return_date date;
+  days int;
+begin
+
+  SELECT r.rental_date, r.return_date INTO rental_date, return_date  from rentals r WHERE customer_id = c_id;
+	
+  SELECT (return_date - rental_date ) INTO days;
+  return days*price;
+	
+end;
+$$ language plpgsql;
+
+SELECT * FROM CalculateCustomerRentalCost(3, 5);
+
+
 --     Создайте функцию GetCustomerStatus, которая принимает customer_id и возвращает статус клиента в зависимости от количества аренд.
 
 --     Если клиент арендовал более 10 фильмов, вернуть статус 'VIP'.
