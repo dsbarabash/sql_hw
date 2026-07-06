@@ -104,4 +104,20 @@ SELECT * FROM GetCustomerStatus(4);
 
 --     Создайте функцию GetMostPopularGenre, которая возвращает жанр, по которому арендовали больше всего фильмов.Функция не принимает параметров и возвращает строку с названием самого популярного жанра.
 
+create or replace function GetMostPopularGenre()
+returns text
+as $$
+declare
+  f_genre TEXT;
+
+begin
+
+select genre INTO f_genre from rentals r join movies m on m.movie_id=r.movie_id group by genre order by count(m.genre) desc limit(1);
+return f_genre;
+	
+end;
+$$ language plpgsql;
+
+SELECT * FROM GetMostPopularGenre();
+
 
