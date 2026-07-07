@@ -6,18 +6,12 @@ create or replace function GetMovieDurationInHours(m_id int)
 returns numeric
 as $$
 declare
-  h_duration numeric;
-  m_duration numeric;
-begin
-SELECT duration / 60 INTO h_duration 
-    FROM movies 
-    WHERE movie_id = m_id;
+  res numeric;
 
-SELECT duration % 60 INTO m_duration 
-    FROM movies 
-    WHERE movie_id = 1;
+begin
+SELECT ROUND(duration / 60.0, 2) INTO res FROM movies WHERE movie_id = m_id;
 	
-return round(h_duration + m_duration/100, 2);
+return res;
 end;
 $$ language plpgsql;
 
