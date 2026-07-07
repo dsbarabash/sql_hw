@@ -29,7 +29,7 @@ $$;
 --     2. Создайте хранимую процедуру GetCustomerRentalCount, которая принимает customer_id и возвращает количество фильмов, которые этот клиент арендовал, а также сумму всех аренд (общее количество записей).
 
 create or replace procedure GetCustomerRentalCount(
-  IN c_id int,
+  c_id int,
   films_count out int,
   total out int
 )
