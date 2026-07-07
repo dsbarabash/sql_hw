@@ -28,6 +28,19 @@ $$;
 
 --     2. Создайте хранимую процедуру GetCustomerRentalCount, которая принимает customer_id и возвращает количество фильмов, которые этот клиент арендовал, а также сумму всех аренд (общее количество записей).
 
+create or replace procedure GetCustomerRentalCount(
+  IN c_id int,
+  films_count out int,
+  total out int
+)
+language plpgsql
+as $$
+begin
+  select count(*) from rentals r INTO total where customer_id=c_id;
+  select count(distinct movie_id) from rentals INTO films_count where customer_id=c_id;
+end;
+$$;
+
 
 -- Задание со звездочкой - выполняется по желанию
 
