@@ -63,4 +63,20 @@ $$;
 
 
 --     4. Создайте хранимую процедуру DeleteCustomerWithLog, которая удаляет клиента из таблицы Customer, а информацию об удалении (ID клиента, email, дата удаления) записывает в лог-таблицу Customer_Deletion_Log.
+
+create or replace procedure DeleteCustomerWithLog(
+  c_id int
+)
+language plpgsql
+as $$
+declare
+  em text;
+begin
+	select email INTO em from customers WHERE customer_id=c_id;
+	delete from client where customer_id=c_id;
+	insert into Customer_Deletion_Log(customer_id, email, deletion_date) VALUES (c_id, em, CURRENT_DATE);
+end;
+$$;
+
+
 --     5. Создайте хранимую процедуру CalculateRentalRevenue, которая рассчитывает общую выручку от аренды фильмов для указанного клиента. Процедура должна принимать customer_id в качестве параметра, подсчитывать общую сумму аренд на основе фиксированной стоимости аренды каждого фильма (например, 5 долларов за фильм) и выводить результат.
