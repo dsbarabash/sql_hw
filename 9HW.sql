@@ -1,6 +1,31 @@
 -- Задания:
 
 --     1. Создайте хранимую процедуру AddNewMovie, которая добавляет новый фильм в таблицу Movie, но только если фильма с таким названием и годом выпуска еще нет в базе данных. Если фильм существует, процедура должна вывести сообщение о наличии дубля.
+
+create or replace procedure AddNewMovie(
+  title text,
+  release_year text,
+  genre text,
+  raiting numeric,
+  duration int,
+  description text,
+  addition jsonb
+)
+language plpgsql
+as $$
+declare
+  total int;
+begin
+  select count(*) from movies m INTO total where m.title=title AND m.realese_year=release_year;
+  if total >0 then
+   raise notice '[лог] Фильм с таким названием и годом выпуска уже существует';
+  else 
+   insert into movies (title, release_year, genre, raiting, duration, description, additional_info)
+   VALUES (title, release_year, genre, raiting, duration, description, addition);
+  end if;
+end;
+$$;
+
 --     2. Создайте хранимую процедуру GetCustomerRentalCount, которая принимает customer_id и возвращает количество фильмов, которые этот клиент арендовал, а также сумму всех аренд (общее количество записей).
 
 
